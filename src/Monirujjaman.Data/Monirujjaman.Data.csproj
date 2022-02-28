@@ -4,6 +4,19 @@
         <TargetFramework>net6.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
+        <Title>Monirujjaman.Data</Title>
+        <Description>This is a repository pattern libray project</Description>
+        <Copyright>2022</Copyright>
+        <RepositoryUrl>https://github.com/engr-monirujjaman/monirujjaman-data/tree/master</RepositoryUrl>
+        <PackageTags>repository pattern, data</PackageTags>
+        <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+        <PackageId>Monirujjaman.Data</PackageId>
+        <Version>1.0.2</Version>
+        <Authors>Monirujjaman</Authors>
+        <Company>Monirujjaman</Company>
+        <Product>Monirujjaman.Data</Product>
+        <RepositoryType>git</RepositoryType>
+        <PackageLicenseExpression>MIT</PackageLicenseExpression>
     </PropertyGroup>
     <ItemGroup>
         <PackageReference Include="Microsoft.Data.SqlClient" Version="4.1.0" />
