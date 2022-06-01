@@ -1,9 +1,6 @@
-﻿using Z.BulkOperations;
+﻿namespace Monirujjaman.Data.Contracts;
 
-namespace Monirujjaman.Data.Contracts;
-
-public interface IUnitOfWork : IDisposable
+public interface IUnitOfWork<TContext> : IDisposable, IAsyncDisposable
 {
-    Task SaveAsync();
-    Task SaveAsync(Action<BulkOperation> options, CancellationToken cancellationToken = default);
+    Task SaveAsync(bool acceptedAllChangesOnSuccess = true, CancellationToken cancellationToken = default);
 }

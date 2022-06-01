@@ -1,30 +1,49 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Monirujjaman.Data.Contracts;
-using Z.BulkOperations;
 
 namespace Monirujjaman.Data;
 
-public class UnitOfWork<TContext> : IUnitOfWork where TContext : DbContext
+public class UnitOfWork<TContext> : IUnitOfWork<TContext> where TContext : DbContext
 {
-    private readonly TContext _dbContext;
+    private DbContext? _dbContext;
 
     public UnitOfWork(TContext dbContext)
     {
-        _dbContext = dbContext;
+        _dbContext = dbContext ;
     }
-
-    public async Task SaveAsync()
+    
+    public Task SaveAsync(bool acceptedAllChangesOnSuccess = true, CancellationToken cancellationToken = default)
     {
-        await _dbContext.BulkSaveChangesAsync();
-    }
-
-    public async Task SaveAsync(Action<BulkOperation> options, CancellationToken cancellationToken = default)
-    {
-        await _dbContext.BulkSaveChangesAsync(options, cancellationToken);
+        return _dbContext?.SaveChangesAsync(acceptedAllChangesOnSuccess, cancellationToken)!;
     }
 
     public void Dispose()
     {
-        _dbContext.Dispose();
+        Dispose(true);
+        GC.SuppressFinalize(this);
+    }
+
+    
+    private void Dispose(bool disposing)
+    {
+        if (!disposing) return;
+        _dbContext?.Dispose();
+        _dbContext = null;
+    }
+    
+    public ValueTask DisposeAsync()
+    {
+        DisposeAsyncCore().ConfigureAwait(false);
+        Dispose(false);
+        GC.SuppressFinalize(this);
+        return default;
+    }
+    
+    private async ValueTask DisposeAsyncCore()
+    {
+        if (_dbContext is not null)
+        {
+            await _dbContext.DisposeAsync().ConfigureAwait(false);
+        }
     }
 }

@@ -6,10 +6,8 @@ using Monirujjaman.Data.Paging;
 namespace Monirujjaman.Data.Contracts;
 
 public interface IRepository<TEntity, in TKey, out TContext>
-    where TEntity : class, IEntity<TKey> where TContext : DbContext where TKey : IComparable
+    where TEntity : class, IEntity<TKey> where TContext : DbContext where TKey : IComparable<TKey>
 {
-    TContext Context { get; }
-
     Task<IPaginate<TEntity>> GetPagedListAsync(Expression<Func<TEntity, bool>>? predicate = null,
         Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>>? orderBy = null,
         Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>>? include = null,
@@ -45,11 +43,13 @@ public interface IRepository<TEntity, in TKey, out TContext>
     Task UpdateAsync(IEnumerable<TEntity> entities,
         CancellationToken cancellationToken = default);
 
+    Task DeleteAsync(TKey id, CancellationToken cancellationToken = default);
+
     Task DeleteAsync(TEntity entity, CancellationToken cancellationToken = default);
 
     Task DeleteAsync(IEnumerable<TEntity> entities, CancellationToken cancellationToken = default);
 
-    Task<IEnumerable<TEntity>> GetAsync(Expression<Func<TEntity, bool>>? predicate = null,
+    Task<List<TEntity>> GetAsync(Expression<Func<TEntity, bool>>? predicate = null,
         Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>>? orderBy = null,
         Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>>? include = null,
         bool disableTracking = true, CancellationToken cancellationToken = default);
@@ -60,7 +60,7 @@ public interface IRepository<TEntity, in TKey, out TContext>
         int size = 20, bool disableTracking = true,
         CancellationToken cancellationToken = default);
     
-    Task<IEnumerable<TResult>> GetAsync<TResult>(Expression<Func<TEntity, TResult>> selector,
+    Task<List<TResult>> GetAsync<TResult>(Expression<Func<TEntity, TResult>> selector,
         Expression<Func<TEntity, bool>>? predicate = null,
         Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>>? orderBy = null,
         Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>>? include = null,
