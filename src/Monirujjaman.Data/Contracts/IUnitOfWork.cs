@@ -4,7 +4,7 @@ using Microsoft.Extensions.Logging;
 
 namespace Monirujjaman.Data.Contracts;
 
-public interface IUnitOfWork<TContext> : IDisposable, IAsyncDisposable where TContext : DbContext
+public interface IUnitOfWork : IDisposable, IAsyncDisposable
 {
     Task BeginTransactionAsync(CancellationToken cancellationToken = default);
     
