@@ -12,7 +12,7 @@ public interface IPaginate<T>
 
     int Pages { get; }
 
-    IList<T> Items { get; }
+    IReadOnlyList<T> Items { get; }
 
     bool HasPrevious { get; }
 
