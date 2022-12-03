@@ -44,7 +44,7 @@ public class Paginate<T> : IPaginate<T>
 
     public int From { get; init; }
 
-    public IList<T> Items { get; init; }
+    public IReadOnlyList<T> Items { get; init; }
     public bool HasPrevious => Index - From > 0;
     public bool HasNext => Index - From + 1 < Pages;
 }
@@ -100,7 +100,7 @@ internal class Paginate<TSource, TResult> : IPaginate<TResult>
 
     public int From { get; }
 
-    public IList<TResult> Items { get; }
+    public IReadOnlyList<TResult> Items { get; }
 
     public bool HasPrevious => Index - From > 0;
 
