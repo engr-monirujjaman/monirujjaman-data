@@ -7,8 +7,8 @@
         <Title>Monirujjaman.Data</Title>
         <Description>This is a repository pattern libray project</Description>
         <Copyright>2022</Copyright>
-        <RepositoryUrl>https://github.com/engr-monirujjaman/monirujjaman-data/tree/master</RepositoryUrl>
-        <PackageTags>repository pattern, data</PackageTags>
+        <RepositoryUrl>https://github.com/engr-monirujjaman/monirujjaman-data/tree/release</RepositoryUrl>
+        <PackageTags>repository pattern, data, monirujjaman</PackageTags>
         <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
         <PackageId>Monirujjaman.Data</PackageId>
         <Version>1.0.2</Version>
@@ -17,6 +17,9 @@
         <Product>Monirujjaman.Data</Product>
         <RepositoryType>git</RepositoryType>
         <PackageLicenseExpression>MIT</PackageLicenseExpression>
+        <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+        <PackageVersion>1.0.3</PackageVersion>
+        <PackageIcon>my_photo.png</PackageIcon>
     </PropertyGroup>
     <ItemGroup>
         <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="11.4.0" />
@@ -24,5 +27,11 @@
         <PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.0" />
         <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="7.0.0" />
         <PackageReference Include="System.Linq.Dynamic.Core" Version="1.2.23" />
+    </ItemGroup>
+    <ItemGroup>
+      <None Update="my_photo.png">
+        <Pack>True</Pack>
+        <PackagePath></PackagePath>
+      </None>
     </ItemGroup>
 </Project>
