@@ -6,7 +6,7 @@ using Monirujjaman.Data.Contracts;
 
 namespace Monirujjaman.Data;
 
-public class UnitOfWork<TContext> : IUnitOfWork<TContext> where TContext : DbContext
+public class UnitOfWork<TContext> : IUnitOfWork where TContext : DbContext
 {
     private TContext _dbContext;
     private Dictionary<Type, object>? _repositories;
