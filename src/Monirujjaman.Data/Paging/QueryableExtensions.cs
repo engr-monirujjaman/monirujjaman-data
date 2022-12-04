@@ -1,5 +1,7 @@
-﻿using System.Linq.Dynamic.Core;
+﻿using System.Globalization;
+using System.Linq.Dynamic.Core;
 using CleanArchitecture.Data.Enums;
+using Monirujjaman.Data.Enums;
 using Monirujjaman.Data.Models;
 
 namespace Monirujjaman.Data.Paging;
@@ -11,28 +13,28 @@ public static class QueryableExtensions
     {
         filters.ToList().ForEach(filter =>
         {
-            if (!filter.ColumnName.Contains('.'))
+            if (!filter.FilterBy.Contains('.'))
             {
                 var op = GetOperator(filter.Operator);
-                var (name, type) = GetPropertyType(filter.ColumnName);
+                var (name, type) = GetPropertyType(filter.FilterBy);
             
                 if (type.IsGenericType && type.GetGenericTypeDefinition() == typeof (Nullable<>))
                     Nullable.GetUnderlyingType(type);
 
                 var value = type == typeof(string)
                     ? filter.Value
-                    : Convert.ChangeType(filter.Value, type);
+                    : Convert.ChangeType(filter.Value, type, CultureInfo.InvariantCulture);
 
                 var predicate = filter.Operator switch
                 {
                     OperatorType.GreaterThan or OperatorType.GreaterThanEquals
-                        or OperatorType.LessThan or OperatorType.LessThanEquals => $"{name} is not null && {name} {op} {value}",
+                        or OperatorType.LessThan or OperatorType.LessThanEquals => name + " is not null && " + name + " " + op  +" @0",
                     OperatorType.Contains or OperatorType.Equals 
-                        or OperatorType.EndsWith or OperatorType.StartsWith  => $"{name}.ToLower().{op}({value}.ToLower())",
-                    _ => $"{filter.ColumnName}.{op}({value})"
+                        or OperatorType.EndsWith or OperatorType.StartsWith  => name + ".ToLower()." + op + "(@0.ToLower())",
+                    _ => name + "." + op + "(@0)"
                 };
 
-                query = query.Where(predicate);
+                query = query.Where(predicate, value);
             }
         });
 
@@ -44,12 +46,12 @@ public static class QueryableExtensions
         {
             OperatorType.Equals => "Equals",
             OperatorType.Contains => "Contains",
+            OperatorType.StartsWith => "StartsWith",
+            OperatorType.EndsWith => "EndsWith",
             OperatorType.GreaterThan => ">",
             OperatorType.GreaterThanEquals => ">=",
             OperatorType.LessThan => "<",
             OperatorType.LessThanEquals => "<=",
-            OperatorType.StartsWith => "StartsWith",
-            OperatorType.EndsWith => "EndsWith",
             _ => "Equals"
         };
 
