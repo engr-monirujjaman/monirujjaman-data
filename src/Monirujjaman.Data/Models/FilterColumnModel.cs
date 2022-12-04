@@ -1,10 +1,10 @@
-﻿using CleanArchitecture.Data.Enums;
+﻿using Monirujjaman.Data.Enums;
 
 namespace Monirujjaman.Data.Models;
 
 public class FilterColumnModel
 {
-    public string ColumnName { get; set; } = default!;
+    public string FilterBy { get; set; } = default!;
 
     public OperatorType Operator { get; set; }
 

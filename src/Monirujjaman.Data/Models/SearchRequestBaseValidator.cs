@@ -1,5 +1,5 @@
-﻿using CleanArchitecture.Data.Enums;
-using FluentValidation;
+﻿using FluentValidation;
+using Monirujjaman.Data.Enums;
 
 namespace Monirujjaman.Data.Models;
 
@@ -46,12 +46,12 @@ public class SearchRequestBaseValidator<TModel> : AbstractValidator<SearchReques
                 .Cascade(CascadeMode.Stop)
                 .Must(item => !string.IsNullOrWhiteSpace(item.Value))
                 .WithMessage((_, filter) => $"{nameof(filter.Value)} '{filter.Value}' is not valid.")
-                .Must(item => _columnNames.Any(a => a.Name.Equals(item.ColumnName, StringComparison.OrdinalIgnoreCase)))
-                .WithMessage((_, filter) => $"{nameof(filter.ColumnName)} '{filter.ColumnName}' is not valid.")
+                .Must(item => _columnNames.Any(a => a.Name.Equals(item.FilterBy, StringComparison.OrdinalIgnoreCase)))
+                .WithMessage((_, filter) => $"{nameof(filter.FilterBy)} '{filter.FilterBy}' is not valid.")
                 .Must(IsOperatorAllowed)
-                .WithMessage((_, filter) => $"{nameof(filter.Operator)} '{filter.Operator}' is not valid for '{filter.ColumnName}'.")
+                .WithMessage((_, filter) => $"{nameof(filter.Operator)} '{filter.Operator}' is not valid for '{filter.FilterBy}'.")
                 .Must(IsValidValue)
-                .WithMessage((_, filter) => $"{nameof(filter.Value)} '{filter.Value}' is not valid for '{filter.ColumnName}'.");
+                .WithMessage((_, filter) => $"{nameof(filter.Value)} '{filter.Value}' is not valid for '{filter.FilterBy}'.");
             
             RuleForEach(x => x.Sorts)
                 .Must(item => _columnNames.Any(a => a.Name.Equals(item.SortBy, StringComparison.OrdinalIgnoreCase)))
@@ -62,7 +62,7 @@ public class SearchRequestBaseValidator<TModel> : AbstractValidator<SearchReques
         {
             try
             {
-                var type = _columnNames.First(a => a.Name == item.ColumnName).Type;
+                var type = _columnNames.First(a => a.Name == item.FilterBy).Type;
                 
                 var _ = Convert.ChangeType(item.Value, type);
 
@@ -85,7 +85,7 @@ public class SearchRequestBaseValidator<TModel> : AbstractValidator<SearchReques
 
         private bool IsOperatorAllowed(FilterColumnModel item)
         {
-            var type = _columnNames.First(a => a.Name == item.ColumnName).Type;
+            var type = _columnNames.First(a => a.Name == item.FilterBy).Type;
 
             return _operatorTypeDictionary[item.Operator].Any(a => a == type);
         }
