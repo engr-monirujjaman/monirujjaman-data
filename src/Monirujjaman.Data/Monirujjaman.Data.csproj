@@ -7,7 +7,7 @@
         <Title>Monirujjaman.Data</Title>
         <Description>This is a repository pattern libray project</Description>
         <Copyright>2022</Copyright>
-        <RepositoryUrl>https://github.com/engr-monirujjaman/monirujjaman-data/tree/release-7.0.0</RepositoryUrl>
+        <RepositoryUrl>https://github.com/engr-monirujjaman/monirujjaman-data/tree/release-7.0.3</RepositoryUrl>
         <PackageTags>repository pattern, data, monirujjaman</PackageTags>
         <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
         <PackageId>Monirujjaman.Data</PackageId>
@@ -18,7 +18,7 @@
         <RepositoryType>git</RepositoryType>
         <PackageLicenseExpression>MIT</PackageLicenseExpression>
         <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-        <PackageVersion>7.0.0</PackageVersion>
+        <PackageVersion>7.0.3</PackageVersion>
         <PackageIcon>my_photo.png</PackageIcon>
     </PropertyGroup>
     <ItemGroup>
