@@ -72,8 +72,7 @@ public class UnitOfWork<TContext> : IUnitOfWork where TContext : DbContext
         }
     }
 
-    public async Task SaveChangesAsync(CancellationToken cancellationToken = default,
-        bool acceptAllChangesOnSuccess = true)
+    public async Task SaveChangesAsync(CancellationToken cancellationToken = default, bool acceptAllChangesOnSuccess = true)
     {
         await _dbContext.SaveChangesAsync(acceptAllChangesOnSuccess, cancellationToken);
     }
