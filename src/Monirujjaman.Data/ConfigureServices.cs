@@ -7,7 +7,7 @@ namespace Monirujjaman.Data;
 
 public static class ConfigureServices
 {
-    public static void AddRepositoryPattern<TContext>(this IServiceCollection services, Action<ServiceConfiguration>? configuration) where TContext : DbContext
+    public static void AddRepositoryPattern<TContext>(this IServiceCollection services, Action<ServiceConfiguration>? configuration = null) where TContext : DbContext
     {
         var serviceConfig = new ServiceConfiguration();
         

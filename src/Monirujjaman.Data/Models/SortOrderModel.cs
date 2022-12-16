@@ -1,4 +1,4 @@
-﻿using CleanArchitecture.Data.Enums;
+﻿using Monirujjaman.Data.Enums;
 
 namespace Monirujjaman.Data.Models;
 

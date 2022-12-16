@@ -1,6 +1,6 @@
 ﻿namespace Monirujjaman.Data.Contracts;
 
-public interface IEntity<out TKey> : IEntityBase
+public interface IEntity<out TKey>
 {
     TKey Id { get; }
 }
