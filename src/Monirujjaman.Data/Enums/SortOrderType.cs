@@ -1,4 +1,4 @@
-﻿namespace CleanArchitecture.Data.Enums;
+﻿namespace Monirujjaman.Data.Enums;
 
 public enum SortOrderType
 {
