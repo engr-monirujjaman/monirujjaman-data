@@ -34,13 +34,13 @@ public class Repository<TEntity, TKey, TContext> : IRepository<TEntity, TKey, TC
         CancellationToken cancellationToken = default)
     {
         var query = DbSet.AsQueryable().AsNoTracking();
-        var total = await query.CountAsync(cancellationToken);
+        var total = await query.CountAsync(cancellationToken).ConfigureAwait(false);
         if (spiltQuery) query = query.AsSplitQuery();
         if (include is not null) query = include(query);
         if (predicate is not null) query = query.Where(predicate);
         return await (orderBy is not null
-            ? orderBy(query).ToPaginateAsync(index, size, total, 1, cancellationToken)
-            : query.ToPaginateAsync(index, size, total, 1, cancellationToken));
+            ? orderBy(query).ToPaginateAsync(index, size, total, 1, cancellationToken).ConfigureAwait(false)
+            : query.ToPaginateAsync(index, size, total, 1, cancellationToken).ConfigureAwait(false));
     }
 
     public async Task<IPaginate<TEntity>> GetPagedListAsync(Expression<Func<TEntity, bool>>? predicate = null,
@@ -52,7 +52,7 @@ public class Repository<TEntity, TKey, TContext> : IRepository<TEntity, TKey, TC
         CancellationToken cancellationToken = default)
     {
         var query = DbSet.AsQueryable().AsNoTracking();
-        var total = await query.CountAsync(cancellationToken);
+        var total = await query.CountAsync(cancellationToken).ConfigureAwait(false);
         if (spiltQuery) query = query.AsSplitQuery();
         if (include is not null) query = include(query);
         if (predicate is not null) query = query.Where(predicate);
@@ -70,13 +70,13 @@ public class Repository<TEntity, TKey, TContext> : IRepository<TEntity, TKey, TC
         CancellationToken cancellationToken = default)
     {
         var query = DbSet.AsQueryable().AsNoTracking();
-        var total = await query.CountAsync(cancellationToken);
+        var total = await query.CountAsync(cancellationToken).ConfigureAwait(false);
         if (spiltQuery) query = query.AsSplitQuery();
         if (include is not null) query = include(query);
         if (predicate is not null) query = query.Where(predicate);
         return await (orderBy is not null
-            ? query.OrderBy(orderBy).ToPaginateAsync(index, size, total, 1, cancellationToken)
-            : query.ToPaginateAsync(index, size, total, 1, cancellationToken));
+            ? query.OrderBy(orderBy).ToPaginateAsync(index, size, total, 1, cancellationToken).ConfigureAwait(false)
+            : query.ToPaginateAsync(index, size, total, 1, cancellationToken).ConfigureAwait(false));
     }
 
     public async Task<IPaginate<TEntity>> GetPagedListAsync(Expression<Func<TEntity, bool>>? predicate = null,
@@ -88,13 +88,13 @@ public class Repository<TEntity, TKey, TContext> : IRepository<TEntity, TKey, TC
         CancellationToken cancellationToken = default)
     {
         var query = DbSet.AsQueryable().AsNoTracking();
-        var total = await query.CountAsync(cancellationToken);
+        var total = await query.CountAsync(cancellationToken).ConfigureAwait(false);
         if (spiltQuery) query = query.AsSplitQuery();
         if (include is not null) query = include(query);
         if (predicate is not null) query = query.Where(predicate);
         return await (orderBy is not null
-            ? query.OrderBy(orderBy).ToPaginateAsync(index, size, total, 1, cancellationToken)
-            : query.ToPaginateAsync(index, size, total, 1, cancellationToken));
+            ? query.OrderBy(orderBy).ToPaginateAsync(index, size, total, 1, cancellationToken).ConfigureAwait(false)
+            : query.ToPaginateAsync(index, size, total, 1, cancellationToken).ConfigureAwait(false));
     }
 
     public async Task<IPaginate<TResult>> GetPagedListAsync<TResult>(Expression<Func<TEntity, TResult>> selector,
@@ -106,7 +106,7 @@ public class Repository<TEntity, TKey, TContext> : IRepository<TEntity, TKey, TC
         CancellationToken cancellationToken = default) where TResult : class
     {
         var query = DbSet.AsQueryable().AsNoTracking();
-        var total = await query.CountAsync(cancellationToken);
+        var total = await query.CountAsync(cancellationToken).ConfigureAwait(false);
         if (spiltQuery) query = query.AsSplitQuery();
         if (include is not null) query = include(query);
         var querySector = query.Select(selector);
@@ -125,14 +125,14 @@ public class Repository<TEntity, TKey, TContext> : IRepository<TEntity, TKey, TC
         CancellationToken cancellationToken = default) where TResult : class
     {
         var query = DbSet.AsQueryable().AsNoTracking();
-        var total = await query.CountAsync(cancellationToken);
+        var total = await query.CountAsync(cancellationToken).ConfigureAwait(false);
         if (spiltQuery) query = query.AsSplitQuery();
         if (include is not null) query = include(query);
         var querySector = query.Select(selector);
         if (predicate is not null) querySector = querySector.Where(predicate);
         return await (orderBy is not null
-            ? querySector.OrderBy(orderBy).ToPaginateAsync(index, size, total, 1, cancellationToken)
-            : querySector.ToPaginateAsync(index, size, total, 1, cancellationToken));
+            ? querySector.OrderBy(orderBy).ToPaginateAsync(index, size, total, 1, cancellationToken).ConfigureAwait(false)
+            : querySector.ToPaginateAsync(index, size, total, 1, cancellationToken).ConfigureAwait(false));
     }
 
     public async Task<IPaginate<TResult>> GetPagedListAsync<TResult>(Expression<Func<TEntity, TResult>> selector,
@@ -145,14 +145,14 @@ public class Repository<TEntity, TKey, TContext> : IRepository<TEntity, TKey, TC
         CancellationToken cancellationToken = default) where TResult : class
     {
         var query = DbSet.AsQueryable().AsNoTracking();
-        var total = await query.CountAsync(cancellationToken);
+        var total = await query.CountAsync(cancellationToken).ConfigureAwait(false);
         if (spiltQuery) query = query.AsSplitQuery();
         if (include is not null) query = include(query);
         var querySector = query.Select(selector);
         if (predicate is not null) querySector = querySector.Where(predicate);
         return await (orderBy is not null
-            ? orderBy(querySector).ToPaginateAsync(index, size, total, 1, cancellationToken)
-            : querySector.ToPaginateAsync(index, size, total, 1, cancellationToken));
+            ? orderBy(querySector).ToPaginateAsync(index, size, total, 1, cancellationToken).ConfigureAwait(false)
+            : querySector.ToPaginateAsync(index, size, total, 1, cancellationToken).ConfigureAwait(false));
     }
 
     public async Task<IPaginate<TResult>> GetPagedListAsync<TResult>(Expression<Func<TEntity, TResult>> selector,
@@ -165,14 +165,14 @@ public class Repository<TEntity, TKey, TContext> : IRepository<TEntity, TKey, TC
         CancellationToken cancellationToken = default) where TResult : class
     {
         var query = DbSet.AsQueryable().AsNoTracking();
-        var total = await query.CountAsync(cancellationToken);
+        var total = await query.CountAsync(cancellationToken).ConfigureAwait(false);
         if (spiltQuery) query = query.AsSplitQuery();
         if (include is not null) query = include(query);
         var querySector = query.Select(selector);
         if (predicate is not null) querySector = querySector.Where(predicate);
         return await (orderBy is not null
-            ? orderBy(querySector).ToPaginateAsync(index, size, total, 1, cancellationToken)
-            : querySector.ToPaginateAsync(index, size, total, 1, cancellationToken));
+            ? orderBy(querySector).ToPaginateAsync(index, size, total, 1, cancellationToken).ConfigureAwait(false)
+            : querySector.ToPaginateAsync(index, size, total, 1, cancellationToken).ConfigureAwait(false));
     }
 
     public async Task<IPaginate<TResult>> GetPagedListAsync<TResult>(Expression<Func<TEntity, TResult>> selector,
@@ -184,13 +184,13 @@ public class Repository<TEntity, TKey, TContext> : IRepository<TEntity, TKey, TC
         CancellationToken cancellationToken = default) where TResult : class
     {
         var query = DbSet.AsQueryable().AsNoTracking();
-        var total = await query.CountAsync(cancellationToken);
+        var total = await query.CountAsync(cancellationToken).ConfigureAwait(false);
         if (spiltQuery) query = query.AsSplitQuery();
         if (include is not null) query = include(query);
         if (predicate is not null) query = query.Where(predicate);
         return await (orderBy is not null
-            ? query.OrderBy(orderBy).Select(selector).ToPaginateAsync(index, size, total, 1, cancellationToken)
-            : query.Select(selector).ToPaginateAsync(index, size, total, 1, cancellationToken));
+            ? query.OrderBy(orderBy).Select(selector).ToPaginateAsync(index, size, total, 1, cancellationToken).ConfigureAwait(false)
+            : query.Select(selector).ToPaginateAsync(index, size, total, 1, cancellationToken).ConfigureAwait(false));
     }
 
     public async Task<IPaginate<TEntity>> GetPagedListAsync(SearchRequestModel searchRequest,
@@ -199,12 +199,12 @@ public class Repository<TEntity, TKey, TContext> : IRepository<TEntity, TKey, TC
         CancellationToken cancellationToken = default)
     {
         var query = DbSet.AsQueryable().AsNoTracking();
-        var total = await query.CountAsync(cancellationToken);
+        var total = await query.CountAsync(cancellationToken).ConfigureAwait(false);
         if (spiltQuery) query = query.AsSplitQuery();
         if (include is not null) query = include(query);
 
         return await query.Where(searchRequest.Filters).OrderBy(searchRequest.Sorts)
-            .ToPaginateAsync(searchRequest.PageIndex, searchRequest.PageSize, total, 1, cancellationToken);
+            .ToPaginateAsync(searchRequest.PageIndex, searchRequest.PageSize, total, 1, cancellationToken).ConfigureAwait(false);
     }
 
     public async Task<IPaginate<TResult>> GetPagedListAsync<TResult>(Expression<Func<TEntity, TResult>> selector,
@@ -214,12 +214,12 @@ public class Repository<TEntity, TKey, TContext> : IRepository<TEntity, TKey, TC
         CancellationToken cancellationToken = default) where TResult : class
     {
         var query = DbSet.AsQueryable().AsNoTracking();
-        var total = await query.CountAsync(cancellationToken);
+        var total = await query.CountAsync(cancellationToken).ConfigureAwait(false);
         if (spiltQuery) query = query.AsSplitQuery();
         if (include is not null) query = include(query);
         var querySector = query.Select(selector);
         return await querySector.Where(searchRequest.Filters).OrderBy(searchRequest.Sorts)
-            .ToPaginateAsync(searchRequest.PageIndex, searchRequest.PageSize, total, 1, cancellationToken);
+            .ToPaginateAsync(searchRequest.PageIndex, searchRequest.PageSize, total, 1, cancellationToken).ConfigureAwait(false);
     }
     
     public async Task<IReadOnlyList<TEntity>> GetAsync(Expression<Func<TEntity, bool>>? predicate = null,
@@ -232,8 +232,8 @@ public class Repository<TEntity, TKey, TContext> : IRepository<TEntity, TKey, TC
         if (include is not null) query = include(query);
         if (predicate is not null) query = query.Where(predicate);
         return orderBy is not null
-            ? await orderBy(query).ToListAsync(cancellationToken)
-            : await query.ToListAsync(cancellationToken);
+            ? await orderBy(query).ToListAsync(cancellationToken).ConfigureAwait(false)
+            : await query.ToListAsync(cancellationToken).ConfigureAwait(false);
     }
 
     public async Task<IReadOnlyList<TResult>> GetAsync<TResult>(Expression<Func<TEntity, TResult>> selector,
@@ -248,8 +248,8 @@ public class Repository<TEntity, TKey, TContext> : IRepository<TEntity, TKey, TC
         if (include is not null) query = include(query);
         if (predicate is not null) query = query.Where(predicate);
         return orderBy is not null
-            ? await orderBy(query).Select(selector).ToListAsync(cancellationToken)
-            : await query.Select(selector).ToListAsync(cancellationToken);
+            ? await orderBy(query).Select(selector).ToListAsync(cancellationToken).ConfigureAwait(false)
+            : await query.Select(selector).ToListAsync(cancellationToken).ConfigureAwait(false);
     }
 
     public async Task<TEntity?> SingleOrDefaultAsync(Expression<Func<TEntity, bool>>? predicate = null,
@@ -262,8 +262,8 @@ public class Repository<TEntity, TKey, TContext> : IRepository<TEntity, TKey, TC
         if (include is not null) query = include(query);
         if (predicate is not null) query = query.Where(predicate);
         return orderBy is not null
-            ? await orderBy(query).FirstOrDefaultAsync(cancellationToken)
-            : await query.FirstOrDefaultAsync(cancellationToken);
+            ? await orderBy(query).FirstOrDefaultAsync(cancellationToken).ConfigureAwait(false)
+            : await query.FirstOrDefaultAsync(cancellationToken).ConfigureAwait(false);
     }
 
     public async Task<TResult> SingleOrDefaultAsync<TResult>(Expression<Func<TEntity, TResult>> selector,
@@ -283,27 +283,27 @@ public class Repository<TEntity, TKey, TContext> : IRepository<TEntity, TKey, TC
 
     public async Task<TEntity?> FindAsync(TKey key, CancellationToken cancellationToken = default)
     {
-        return await DbSet.FindAsync(key, cancellationToken);
+        return await DbSet.FindAsync(key, cancellationToken).ConfigureAwait(false);
     }
 
     public async Task<TEntity?> FindAsync(Expression<Func<TEntity, bool>> predicate,
         CancellationToken cancellationToken = default)
     {
-        return await DbSet.FirstOrDefaultAsync(predicate, cancellationToken);
+        return await DbSet.FirstOrDefaultAsync(predicate, cancellationToken).ConfigureAwait(false);
     }
 
     public async Task<int> CountAsync(Expression<Func<TEntity, bool>>? predicate = null,
         CancellationToken cancellationToken = default)
     {
         return predicate is not null
-            ? await DbContext.Set<TEntity>().CountAsync(predicate, cancellationToken)
-            : await DbContext.Set<TEntity>().CountAsync(cancellationToken);
+            ? await DbContext.Set<TEntity>().CountAsync(predicate, cancellationToken).ConfigureAwait(false)
+            : await DbContext.Set<TEntity>().CountAsync(cancellationToken).ConfigureAwait(false);
     }
 
     public async Task<bool> IsExistAsync(Expression<Func<TEntity, bool>> predicate,
         CancellationToken cancellationToken = default)
     {
-        return await DbContext.Set<TEntity>().AnyAsync(predicate, cancellationToken);
+        return await DbContext.Set<TEntity>().AnyAsync(predicate, cancellationToken).ConfigureAwait(false);
     }
 
     public async Task<(IReadOnlyList<TResult> data, IDictionary<string, dynamic> output)>
@@ -333,12 +333,12 @@ public class Repository<TEntity, TKey, TContext> : IRepository<TEntity, TKey, TC
 
     public async Task InsertAsync(TEntity entity, CancellationToken cancellationToken = default)
     {
-        await InsertAsync(new[] { entity }, cancellationToken);
+        await InsertAsync(new[] { entity }, cancellationToken).ConfigureAwait(false);
     }
 
     public async Task InsertAsync(IEnumerable<TEntity> entities, CancellationToken cancellationToken = default)
     {
-        await DbSet.AddRangeAsync(entities, cancellationToken);
+        await DbSet.AddRangeAsync(entities, cancellationToken).ConfigureAwait(false);
     }
 
     public async Task UpdateAsync(TEntity entity, CancellationToken cancellationToken = default)
@@ -347,7 +347,7 @@ public class Repository<TEntity, TKey, TContext> : IRepository<TEntity, TKey, TC
         {
             DbSet.Attach(entity);
             DbContext.Entry(entity).State = EntityState.Modified;
-        }, cancellationToken);
+        }, cancellationToken).ConfigureAwait(false);
     }
 
     public async Task UpdateAsync(IEnumerable<TEntity> entities, CancellationToken cancellationToken = default)
@@ -357,14 +357,14 @@ public class Repository<TEntity, TKey, TContext> : IRepository<TEntity, TKey, TC
             foreach (var entity in entities)
                 DbContext.ChangeTracker.TrackGraph(entity,
                     e => { e.Entry.State = e.Entry.Entity is TEntity ? EntityState.Unchanged : EntityState.Modified; });
-        }, cancellationToken);
+        }, cancellationToken).ConfigureAwait(false);
     }
 
     public async Task DeleteAsync(TKey id, CancellationToken cancellationToken = default)
     {
         var entity = await DbSet.FindAsync(id);
         if (entity is not null)
-            await DeleteAsync(entity, cancellationToken);
+            await DeleteAsync(entity, cancellationToken).ConfigureAwait(false);
     }
 
     public Task DeleteAsync(TEntity entity, CancellationToken cancellationToken = default)
@@ -386,14 +386,14 @@ public class Repository<TEntity, TKey, TContext> : IRepository<TEntity, TKey, TC
     public async Task DeleteAsync(Expression<Func<TEntity, bool>> predicate,
         CancellationToken cancellationToken = default)
     {
-        var entities = await DbSet.AsQueryable().Where(predicate).ToListAsync(cancellationToken);
-        await DeleteAsync(entities, cancellationToken);
+        var entities = await DbSet.AsQueryable().Where(predicate).ToListAsync(cancellationToken).ConfigureAwait(false);
+        await DeleteAsync(entities, cancellationToken).ConfigureAwait(false);
     }
 
     public async Task DeleteAsync(CancellationToken cancellationToken = default)
     {
-        var entities = await DbSet.ToListAsync(cancellationToken);
-        await DeleteAsync(entities, cancellationToken);
+        var entities = await DbSet.ToListAsync(cancellationToken).ConfigureAwait(false);
+        await DeleteAsync(entities, cancellationToken).ConfigureAwait(false);
     }
 
     public async Task ExecuteSqlAsync(string sql, object[] parameters, CancellationToken cancellationToken = default)
@@ -402,11 +402,11 @@ public class Repository<TEntity, TKey, TContext> : IRepository<TEntity, TKey, TC
 
         await using var connection = DbContext.Database.GetDbConnection();
 
-        var transaction = await connection.BeginTransactionAsync(cancellationToken);
+        var transaction = await connection.BeginTransactionAsync(cancellationToken).ConfigureAwait(false);
 
         try
         {
-            if (connection.State == ConnectionState.Closed) await connection.OpenAsync(cancellationToken);
+            if (connection.State == ConnectionState.Closed) await connection.OpenAsync(cancellationToken).ConfigureAwait(false);
 
             var commandText = string.Format(sql, parameters);
 
@@ -416,15 +416,15 @@ public class Repository<TEntity, TKey, TContext> : IRepository<TEntity, TKey, TC
             command.CommandTimeout = 300;
             command.CommandType = CommandType.Text;
 
-            await command.ExecuteNonQueryAsync(cancellationToken);
+            await command.ExecuteNonQueryAsync(cancellationToken).ConfigureAwait(false);
 
-            await transaction.CommitAsync(cancellationToken);
+            await transaction.CommitAsync(cancellationToken).ConfigureAwait(false);
         }
         catch (Exception)
         {
             try
             {
-                await transaction.RollbackAsync(cancellationToken);
+                await transaction.RollbackAsync(cancellationToken).ConfigureAwait(false);
             }
             catch (Exception)
             {
@@ -448,7 +448,7 @@ public class Repository<TEntity, TKey, TContext> : IRepository<TEntity, TKey, TC
 
         try
         {
-            if (connection.State == ConnectionState.Closed) await connection.OpenAsync(cancellationToken);
+            if (connection.State == ConnectionState.Closed) await connection.OpenAsync(cancellationToken).ConfigureAwait(false);
 
             var commandText = string.Format(sql, parameters);
 
