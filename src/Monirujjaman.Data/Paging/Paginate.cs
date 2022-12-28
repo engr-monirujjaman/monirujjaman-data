@@ -1,8 +1,8 @@
 ﻿namespace Monirujjaman.Data.Paging;
 
-public class Paginate<T> : IPaginate<T>
+public sealed class Paginate<T> : IPaginate<T>
 {
-    internal Paginate(IEnumerable<T> source, int index, int size, int from)
+    public Paginate(IEnumerable<T> source, int index, int size, int total, int from = 1)
     {
         var enumerable = source as T[] ?? source.ToArray();
 
@@ -14,8 +14,9 @@ public class Paginate<T> : IPaginate<T>
             Index = index;
             Size = size;
             From = from;
-            Count = queryable.Count();
-            Pages = (int) Math.Ceiling(Count / (double) Size);
+            TotalFiltered = queryable.Count();
+            Total = total;
+            Pages = (int)Math.Ceiling(TotalFiltered / (double)Size);
             Items = queryable.Skip((Index - From) * Size).Take(Size).ToList();
         }
         else
@@ -23,13 +24,14 @@ public class Paginate<T> : IPaginate<T>
             Index = index;
             Size = size;
             From = from;
-            Count = enumerable.Length;
-            Pages = (int) Math.Ceiling(Count / (double) Size);
+            TotalFiltered = enumerable.Length;
+            Total = total;
+            Pages = (int)Math.Ceiling(TotalFiltered / (double)Size);
             Items = enumerable.Skip((Index - From) * Size).Take(Size).ToList();
         }
     }
 
-    internal Paginate()
+    public Paginate()
     {
         Items = Array.Empty<T>();
     }
@@ -38,21 +40,23 @@ public class Paginate<T> : IPaginate<T>
 
     public int Size { get; init; }
 
-    public int Count { get; init; }
+    public int TotalFiltered { get; init; }
+
+    public int Total { get; init; }
 
     public int Pages { get; init; }
 
     public int From { get; init; }
 
-    public IReadOnlyList<T> Items { get; init; }
+    public IReadOnlyCollection<T> Items { get; init; }
     public bool HasPrevious => Index - From > 0;
     public bool HasNext => Index - From + 1 < Pages;
 }
 
-internal class Paginate<TSource, TResult> : IPaginate<TResult>
+public class Paginate<TSource, TResult> : IPaginate<TResult>
 {
     public Paginate(IEnumerable<TSource> source, Func<IEnumerable<TSource>, IEnumerable<TResult>> converter,
-        int index, int size, int from)
+        int index, int size, int total, int from = 1)
     {
         var enumerable = source as TSource[] ?? source.ToArray();
 
@@ -63,8 +67,9 @@ internal class Paginate<TSource, TResult> : IPaginate<TResult>
             Index = index;
             Size = size;
             From = from;
-            Count = queryable.Count();
-            Pages = (int) Math.Ceiling(Count / (double) Size);
+            TotalFiltered = queryable.Count();
+            Total = total;
+            Pages = (int)Math.Ceiling(TotalFiltered / (double)Size);
             var items = queryable.Skip((Index - From) * Size).Take(Size).ToArray();
             Items = new List<TResult>(converter(items));
         }
@@ -73,34 +78,42 @@ internal class Paginate<TSource, TResult> : IPaginate<TResult>
             Index = index;
             Size = size;
             From = from;
-            Count = enumerable.Count();
-            Pages = (int) Math.Ceiling(Count / (double) Size);
+            TotalFiltered = enumerable.Length;
+            Pages = (int)Math.Ceiling(TotalFiltered / (double)Size);
             var items = enumerable.Skip((Index - From) * Size).Take(Size).ToArray();
             Items = new List<TResult>(converter(items));
         }
     }
-    
+
     public Paginate(IPaginate<TSource> source, Func<IEnumerable<TSource>, IEnumerable<TResult>> converter)
     {
         Index = source.Index;
         Size = source.Size;
         From = source.From;
-        Count = source.Count;
+        TotalFiltered = source.TotalFiltered;
+        Total = source.Total;
         Pages = source.Pages;
         Items = new List<TResult>(converter(source.Items));
     }
 
-    public int Index { get; }
+    public Paginate()
+    {
+        Items = Array.Empty<TResult>();
+    }
 
-    public int Size { get; }
+    public int Index { get; init; }
 
-    public int Count { get; }
+    public int Size { get; init; }
 
-    public int Pages { get; }
+    public int TotalFiltered { get; init; }
 
-    public int From { get; }
+    public int Total { get; init; }
 
-    public IReadOnlyList<TResult> Items { get; }
+    public int Pages { get; init; }
+
+    public int From { get; init; }
+
+    public IReadOnlyCollection<TResult> Items { get; init; }
 
     public bool HasPrevious => Index - From > 0;
 

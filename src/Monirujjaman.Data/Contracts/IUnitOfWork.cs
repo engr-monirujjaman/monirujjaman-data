@@ -7,9 +7,9 @@ namespace Monirujjaman.Data.Contracts;
 public interface IUnitOfWork : IDisposable, IAsyncDisposable
 {
     Task BeginTransactionAsync(CancellationToken cancellationToken = default);
-    
+
     Task CommitTransactionAsync(CancellationToken cancellationToken = default);
-    
+
     Task RoleBackTransactionAsync(CancellationToken cancellationToken = default);
 
     Task ExecutionStrategyAsync(ILogger logger, string functionName,

@@ -12,49 +12,84 @@ public interface IRepository<TEntity, in TKey> where TEntity : IEntity<TKey> whe
         Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>>? include = null,
         int index = 1,
         int size = 10,
-        bool disableTracking = true,
+        bool spiltQuery = false,
         CancellationToken cancellationToken = default);
 
     Task<IPaginate<TResult>> GetPagedListAsync<TResult>(Expression<Func<TEntity, TResult>> selector,
         Expression<Func<TEntity, bool>>? predicate = null,
-        Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>>? orderBy = null,
+        Func<IQueryable<TResult>, IOrderedQueryable<TResult>>? orderBy = null,
         Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>>? include = null,
         int index = 1,
         int size = 10,
-        bool disableTracking = true,
+        bool spiltQuery = false,
         CancellationToken cancellationToken = default) where TResult : class;
-    
+
+    Task<IPaginate<TResult>> GetPagedListAsync<TResult>(Expression<Func<TEntity, TResult>> selector,
+        Expression<Func<TResult, bool>>? predicate = null,
+        Func<IQueryable<TResult>, IOrderedQueryable<TResult>>? orderBy = null,
+        Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>>? include = null,
+        int index = 1,
+        int size = 10,
+        bool spiltQuery = false,
+        CancellationToken cancellationToken = default) where TResult : class;
+
     Task<IPaginate<TEntity>> GetPagedListAsync(Expression<Func<TEntity, bool>>? predicate = null,
         string? orderBy = null,
-        Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>>? include = null, int index = 1,
-        int size = 10, bool disableTracking = true,
+        Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>>? include = null,
+        int index = 1,
+        int size = 10,
+        bool spiltQuery = false,
         CancellationToken cancellationToken = default);
-    
-    Task<IPaginate<TResult>> GetPagedListAsync<TResult>(Expression<Func<TEntity, TResult>>? selector,
+
+    Task<IPaginate<TResult>> GetPagedListAsync<TResult>(Expression<Func<TEntity, TResult>> selector,
         Expression<Func<TEntity, bool>>? predicate = null, string? orderBy = null,
         Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>>? include = null,
-        int index = 1, int size = 10, bool disableTracking = true,
+        int index = 1,
+        int size = 10,
+        bool spiltQuery = false,
         CancellationToken cancellationToken = default) where TResult : class;
 
     Task<IPaginate<TEntity>> GetPagedListAsync(IList<FilterColumnModel>? predicate = null,
         IList<SortOrderModel>? orderBy = null,
-        Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>>? include = null, int index = 0,
-        int size = 10, CancellationToken cancellationToken = default);
+        Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>>? include = null,
+        int index = 0,
+        int size = 10,
+        bool spiltQuery = false,
+        CancellationToken cancellationToken = default);
 
-    Task<IPaginate<TResult>> GetPagedListAsync<TResult>(Expression<Func<TEntity, TResult>>? selector,
+    Task<IPaginate<TResult>> GetPagedListAsync<TResult>(Expression<Func<TEntity, TResult>> selector,
         IList<FilterColumnModel>? predicate = null, IList<SortOrderModel>? orderBy = null,
         Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>>? include = null,
-        int index = 0, int size = 10, CancellationToken cancellationToken = default) where TResult : class;
+        int index = 0,
+        int size = 10,
+        bool spiltQuery = false,
+        CancellationToken cancellationToken = default) where TResult : class;
 
-    Task<IPaginate<TResult>> GetPagedListAsync<TResult>(Expression<Func<TEntity, TResult>>? selector,
+    Task<IPaginate<TResult>> GetPagedListAsync<TResult>(Expression<Func<TEntity, TResult>> selector,
         Expression<Func<TEntity, bool>>? predicate = null, IList<SortOrderModel>? orderBy = null,
         Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>>? include = null,
-        int index = 1, int size = 10, CancellationToken cancellationToken = default) where TResult : class;
+        int index = 1,
+        int size = 10,
+        bool spiltQuery = false,
+        CancellationToken cancellationToken = default) where TResult : class;
 
     Task<IPaginate<TEntity>> GetPagedListAsync(Expression<Func<TEntity, bool>>? predicate = null,
         IList<SortOrderModel>? orderBy = null,
         Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>>? include = null, int index = 1,
-        int size = 10, CancellationToken cancellationToken = default);
+        int size = 10,
+        bool spiltQuery = false,
+        CancellationToken cancellationToken = default);
+    
+    Task<IPaginate<TEntity>> GetPagedListAsync(SearchRequestModel searchRequest,
+        Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>>? include = null,
+        bool spiltQuery = false,
+        CancellationToken cancellationToken = default);
+
+    Task<IPaginate<TResult>> GetPagedListAsync<TResult>(Expression<Func<TEntity, TResult>> selector,
+        SearchRequestModel searchRequest,
+        Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>>? include = null,
+        bool spiltQuery = false,
+        CancellationToken cancellationToken = default) where TResult : class;
 
     Task<bool> IsExistAsync(Expression<Func<TEntity, bool>> predicate,
         CancellationToken cancellationToken = default);
@@ -81,7 +116,7 @@ public interface IRepository<TEntity, in TKey> where TEntity : IEntity<TKey> whe
     Task DeleteAsync(IEnumerable<TEntity> entities, CancellationToken cancellationToken = default);
 
     Task DeleteAsync(Expression<Func<TEntity, bool>> predicate, CancellationToken cancellationToken = default);
-    
+
     Task DeleteAsync(CancellationToken cancellationToken = default);
 
     Task<IReadOnlyList<TEntity>> GetAsync(Expression<Func<TEntity, bool>>? predicate = null,
@@ -101,20 +136,21 @@ public interface IRepository<TEntity, in TKey> where TEntity : IEntity<TKey> whe
         Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>>? include = null,
         bool disableTracking = true, CancellationToken cancellationToken = default);
 
-    Task<TResult> SingleOrDefaultAsync<TResult>(Expression<Func<TEntity, TResult>>? selector,
+    Task<TResult> SingleOrDefaultAsync<TResult>(Expression<Func<TEntity, TResult>> selector,
         Expression<Func<TEntity, bool>>? predicate = null,
         Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>>? orderBy = null,
         Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>>? include = null,
         bool disableTracking = true);
 
     Task<(IReadOnlyList<TResult> data, IDictionary<string, dynamic> output)> QueryWithStoredProcedureAsync<TResult>(
-            string storedProcedureName,
-            IDictionary<string, object?>? inputParameters,
-            IDictionary<string, Type>? outputParameters);
+        string storedProcedureName,
+        IDictionary<string, object?>? inputParameters,
+        IDictionary<string, Type>? outputParameters);
 
     Task ExecuteSqlAsync(string sql, object[] parameters, CancellationToken cancellationToken = default);
 
-    Task<IReadOnlyList<TResult>> ExecuteSqlAsync<TResult>(string sql, object[] parameters, CancellationToken cancellationToken = default);
+    Task<IReadOnlyList<TResult>> ExecuteSqlAsync<TResult>(string sql, object[] parameters,
+        CancellationToken cancellationToken = default);
 
     IQueryable<TEntity> GetQueryable();
 }

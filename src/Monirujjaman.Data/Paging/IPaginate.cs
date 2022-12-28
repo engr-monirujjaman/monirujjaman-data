@@ -1,6 +1,6 @@
 ﻿namespace Monirujjaman.Data.Paging;
 
-public interface IPaginate<T>
+public interface IPaginate<out T>
 {
     int From { get; }
 
@@ -8,11 +8,13 @@ public interface IPaginate<T>
 
     int Size { get; }
 
-    int Count { get; }
+    int TotalFiltered { get; }
+
+    int Total { get; }
 
     int Pages { get; }
 
-    IReadOnlyList<T> Items { get; }
+    IReadOnlyCollection<T> Items { get; }
 
     bool HasPrevious { get; }
 

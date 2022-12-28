@@ -39,7 +39,7 @@ public class UnitOfWork<TContext> : IUnitOfWork where TContext : DbContext
         Func<IDbContextTransaction, Task> operation, CancellationToken cancellationToken = default)
     {
         var strategy = _dbContext.Database.CreateExecutionStrategy();
-        
+
         await strategy.ExecuteAsync(async () =>
         {
             var transaction = await _dbContext.Database.BeginTransactionAsync(cancellationToken);
@@ -56,14 +56,16 @@ public class UnitOfWork<TContext> : IUnitOfWork where TContext : DbContext
         });
     }
 
-    public async Task ExecuteInTransactionAsync(ILogger logger, string functionName, Func<DbContext, CancellationToken, Task> operation,
+    public async Task ExecuteInTransactionAsync(ILogger logger, string functionName,
+        Func<DbContext, CancellationToken, Task> operation,
         Func<DbContext, CancellationToken, Task<bool>> verify, CancellationToken cancellationToken = default)
     {
         var strategy = _dbContext.Database.CreateExecutionStrategy();
 
         try
         {
-            await strategy.ExecuteInTransactionAsync(_dbContext, operation, verify, IsolationLevel.Serializable, cancellationToken);
+            await strategy.ExecuteInTransactionAsync(_dbContext, operation, verify, IsolationLevel.Serializable,
+                cancellationToken);
             _dbContext.ChangeTracker.AcceptAllChanges();
         }
         catch (Exception e)
@@ -72,12 +74,14 @@ public class UnitOfWork<TContext> : IUnitOfWork where TContext : DbContext
         }
     }
 
-    public async Task SaveChangesAsync(CancellationToken cancellationToken = default, bool acceptAllChangesOnSuccess = true)
+    public async Task SaveChangesAsync(CancellationToken cancellationToken = default,
+        bool acceptAllChangesOnSuccess = true)
     {
         await _dbContext.SaveChangesAsync(acceptAllChangesOnSuccess, cancellationToken);
     }
 
-    public IRepository<TEntity, TKey> Repository<TEntity, TKey>() where TEntity : class, IEntity<TKey> where TKey : IComparable<TKey>
+    public IRepository<TEntity, TKey> Repository<TEntity, TKey>()
+        where TEntity : class, IEntity<TKey> where TKey : IComparable<TKey>
     {
         _repositories ??= new Dictionary<Type, object>();
 
