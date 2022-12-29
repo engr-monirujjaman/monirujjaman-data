@@ -48,6 +48,14 @@ public interface IRepository<TEntity, in TKey> where TEntity : IEntity<TKey> whe
         int size = 10,
         bool spiltQuery = false,
         CancellationToken cancellationToken = default) where TResult : class;
+    
+    Task<IPaginate<TResult>> GetPagedListAsync<TResult>(Expression<Func<TEntity, TResult>> selector,
+        string? predicate = null, string? orderBy = null,
+        Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>>? include = null,
+        int index = 1,
+        int size = 10,
+        bool spiltQuery = false,
+        CancellationToken cancellationToken = default) where TResult : class;
 
     Task<IPaginate<TEntity>> GetPagedListAsync(IList<FilterColumnModel>? predicate = null,
         IList<SortOrderModel>? orderBy = null,

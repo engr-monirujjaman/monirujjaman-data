@@ -193,6 +193,24 @@ public class Repository<TEntity, TKey, TContext> : IRepository<TEntity, TKey, TC
             : query.Select(selector).ToPaginateAsync(index, size, total, 1, cancellationToken).ConfigureAwait(false));
     }
 
+    public async Task<IPaginate<TResult>> GetPagedListAsync<TResult>(Expression<Func<TEntity, TResult>> selector,
+        string? predicate = null, string? orderBy = null,
+        Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>>? include = null,
+        int index = 1,
+        int size = 10,
+        bool spiltQuery = false,
+        CancellationToken cancellationToken = default) where TResult : class
+    {
+        var query = DbSet.AsQueryable().AsNoTracking();
+        var total = await query.CountAsync(cancellationToken).ConfigureAwait(false);
+        if (spiltQuery) query = query.AsSplitQuery();
+        if (include is not null) query = include(query);
+        if (predicate is not null) query = query.Where(predicate);
+        return await (orderBy is not null
+            ? query.OrderBy(orderBy).Select(selector).ToPaginateAsync(index, size, total, 1, cancellationToken).ConfigureAwait(false)
+            : query.Select(selector).ToPaginateAsync(index, size, total, 1, cancellationToken).ConfigureAwait(false));
+    }
+
     public async Task<IPaginate<TEntity>> GetPagedListAsync(SearchRequestModel searchRequest,
         Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>>? include = null,
         bool spiltQuery = false,
